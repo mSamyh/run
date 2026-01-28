@@ -1,0 +1,339 @@
+1️⃣ ENTERPRISE-GRADE RUN CHALLENGE WEB APP – BLUEPRINT
+
+🎯 Core Concept
+
+A run challenge platform where:
+	•	Admins / Organizers create and manage challenges
+	•	Athletes register, sync Strava, and compete
+	•	Runs auto-sync from Strava API
+	•	Progress, milestones, and leaderboards update automatically
+	•	Optimized for PWA + mobile-first
+
+⸻
+
+👥 User Roles
+
+🧑‍💼 Admin / Organizer
+	•	Create & manage challenges
+	•	Define challenge rules & metrics
+	•	View analytics
+	•	Manage athletes
+	•	Moderate leaderboards
+
+🏃 Athlete
+	•	Register & manage profile
+	•	Connect Strava
+	•	Join challenges
+	•	Track progress
+	•	View leaderboards
+
+⸻
+
+🧱 System Architecture (High Level)
+
+Frontend
+	•	Next.js / React
+	•	PWA enabled
+	•	Mobile-first UI
+	•	Bottom navigation
+	•	Offline-safe caching
+
+Backend
+	•	REST / GraphQL API
+	•	Webhooks for Strava
+	•	Background jobs (run syncing & recalculation)
+	•	Role-based access control (RBAC)
+
+Database
+	•	PostgreSQL (recommended)
+	•	Time-series friendly tables for runs
+	•	Indexed leaderboard tables
+
+Integrations
+	•	Strava OAuth + Webhooks
+	•	Email / Push notifications
+	•	Optional analytics (Mixpanel, GA)
+
+⸻
+
+🗄️ Core Database Entities
+
+Users
+	•	id
+	•	role (admin / athlete)
+	•	name
+	•	email
+	•	avatar
+	•	gender, age group
+	•	country, club
+	•	strava_user_id
+	•	created_at
+
+Challenges
+	•	id
+	•	title
+	•	description
+	•	start_date
+	•	end_date
+	•	registration_deadline
+	•	challenge_type
+	•	distance (e.g. 100km)
+	•	time
+	•	frequency
+	•	rules (JSON)
+	•	visibility (public / private)
+	•	created_by
+
+ChallengeParticipants
+	•	id
+	•	challenge_id
+	•	user_id
+	•	joined_at
+	•	status (active / completed / disqualified)
+
+Runs
+	•	id
+	•	user_id
+	•	challenge_id
+	•	strava_activity_id
+	•	distance
+	•	duration
+	•	pace
+	•	run_date
+	•	verified
+
+Leaderboards
+	•	challenge_id
+	•	user_id
+	•	total_distance
+	•	total_time
+	•	rank
+	•	updated_at
+
+⸻
+
+🔁 Key System Flows
+
+Athlete Onboarding
+	1.	Sign up
+	2.	Complete profile
+	3.	Connect Strava
+	4.	Browse challenges
+	5.	Join challenge
+
+Strava Sync Flow
+	1.	Athlete authorizes Strava
+	2.	Webhook receives new activity
+	3.	Validate activity
+	4.	Assign run to eligible challenges
+	5.	Recalculate:
+	•	Progress
+	•	Leaderboard rank
+	6.	Notify athlete
+
+⸻
+
+2️⃣ PWA / MOBILE UX STRUCTURE
+
+📱 Bottom Navigation (Athlete App)
+
+Icon	Page
+🏠	Home
+🏆	Challenges
+📊	Leaderboard
+👤	Profile
+
+
+⸻
+
+🏠 HOME (Athlete Dashboard)
+
+Purpose: Motivation + clarity
+
+Components
+	•	Greeting (dynamic)
+	•	Quick stats:
+	•	Total distance this week
+	•	Active challenges count
+	•	My Challenges (Cards)
+	•	Progress bar
+	•	% completed
+	•	Days remaining
+	•	Tips Section
+	•	Recovery tips
+	•	Hydration reminders
+	•	Training suggestions (static or AI-generated)
+
+⸻
+
+🏆 CHALLENGES PAGE
+
+Tabs
+	•	Active Challenges
+	•	Upcoming
+	•	Completed
+
+Challenge Card
+	•	Title
+	•	Duration
+	•	Goal (e.g. 100km)
+	•	Participants count
+	•	Join / View button
+
+Challenge Detail Page
+	•	Description
+	•	Rules & criteria
+	•	Metrics used (distance, pace, etc.)
+	•	Eligibility
+	•	Start / End dates
+	•	Join button
+
+⸻
+
+📊 LEADERBOARD PAGE
+
+Features
+	•	Filter by challenge
+	•	Rankings:
+	•	Overall
+	•	Gender
+	•	Age group
+	•	Real-time updates
+	•	Highlight logged-in athlete
+	•	Tie-break logic clearly shown
+
+⸻
+
+👤 PROFILE PAGE
+
+Sections
+
+Profile Info
+	•	Name
+	•	Avatar
+	•	Age group
+	•	Country / Club
+
+Strava Integration
+	•	Connect / Disconnect
+	•	Sync status
+	•	Last sync timestamp
+
+Settings
+	•	Notifications
+	•	Privacy
+	•	Units (km / miles)
+	•	Logout
+
+⸻
+
+📲 PWA FEATURES
+	•	Offline mode (view last data)
+	•	Push notifications
+	•	Home screen install
+	•	Background sync (when online)
+	•	Fast cold-start
+
+⸻
+
+3️⃣ CURSOR AI – MASTER PROMPT 🚀
+
+You can paste this directly into Cursor:
+
+⸻
+
+🧠 CURSOR AI PROMPT
+
+You are a senior full-stack architect and product engineer.
+
+Build a full enterprise-grade Run Challenge web application with the following requirements:
+
+GENERAL
+- Web app + PWA (mobile-first)
+- Athlete and Admin roles
+- Clean modular architecture
+- Scalable and secure
+- Modern UI with bottom navigation
+
+FEATURES
+1. Authentication
+   - Email/password
+   - Role-based access (Admin / Athlete)
+
+2. Athlete Experience
+   - Home dashboard showing:
+     - Active challenges
+     - Progress bars
+     - Weekly stats
+     - Training tips
+   - Challenges page:
+     - View active challenges
+     - Join challenges
+     - View challenge details and criteria
+   - Leaderboard page:
+     - Challenge-based leaderboard
+     - Rank by distance/time
+     - Highlight logged-in athlete
+   - Profile page:
+     - Athlete info
+     - Avatar upload
+     - Strava connection
+     - Settings
+
+3. Admin Experience
+   - Create and manage challenges
+   - Define challenge rules:
+     - Distance goals
+     - Time-based goals
+     - Date range
+   - View participants
+   - View analytics
+   - Moderate leaderboard if needed
+
+4. Strava Integration
+   - OAuth login
+   - Store Strava user ID securely
+   - Webhook to receive new activities
+   - Auto-assign runs to active challenges
+   - Recalculate progress and leaderboards
+
+5. Backend
+   - REST or GraphQL API
+   - Background jobs for syncing
+   - Secure webhook handling
+   - Idempotent Strava sync logic
+
+6. Database
+   - Users
+   - Challenges
+   - ChallengeParticipants
+   - Runs
+   - Leaderboards
+
+TECH GUIDELINES
+- Use clean architecture
+- Separate services and UI logic
+- Mobile-first design
+- Reusable components
+- Optimized queries for leaderboards
+
+DELIVERABLES
+- Folder structure
+- API design
+- Database schema
+- Key frontend components
+- Strava integration flow
+- Security considerations
+
+
+⸻
+
+🔥 Optional Advanced Features (Future-Proof)
+	•	Team challenges
+	•	AI coaching tips
+	•	Injury/rest tracking
+	•	Corporate events
+	•	Sponsor branding
+	•	Anti-cheat detection
+	•	GPS anomaly detection
+
