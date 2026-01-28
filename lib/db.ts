@@ -271,3 +271,16 @@ class InMemoryDB {
 
 export const db = new InMemoryDB();
 
+// Seed default users so login works after server restarts
+db.createUser({
+  role: "admin",
+  name: "Admin User",
+  email: "admin@example.com"
+});
+
+db.createUser({
+  role: "athlete",
+  name: "Demo Athlete",
+  email: "athlete@example.com"
+});
+

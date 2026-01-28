@@ -2,8 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import useSWR from "swr";
+import { fetcher } from "../lib/fetcher";
 
-const items = [
+type MeResponse = {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    role: "admin" | "athlete";
+  } | null;
+};
+
+const baseItems = [
   { href: "/", label: "Home", icon: "🏠" },
   { href: "/challenges", label: "Challenges", icon: "🏆" },
   { href: "/leaderboard", label: "Leaderboard", icon: "📊" },
@@ -12,10 +23,16 @@ const items = [
 
 export function BottomNav() {
   const pathname = usePathname();
+  const { data } = useSWR<MeResponse>("/api/auth/me", fetcher);
 
   if (pathname === "/login") {
     return null;
   }
+
+  const isAdmin = data?.user?.role === "admin";
+  const items = isAdmin
+    ? [...baseItems, { href: "/admin", label: "Admin", icon: "⚙️" }]
+    : baseItems;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 border-t border-slate-800 bg-slate-950/95 backdrop-blur-md">
